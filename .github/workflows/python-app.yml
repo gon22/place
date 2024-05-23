@@ -37,3 +37,11 @@ jobs:
     - name: Test with pytest
       run: |
         python naver_place_serch_ranking_v3.py
+
+    - name: Commit and push CSV file
+      run: |
+        git config --local kwakyh77@gmail.com "actions@github.com"
+        git config --local gon22 "GitHub Actions"
+        git add .
+        git commit -m "Add generated CSV file"
+        git push
