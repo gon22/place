@@ -1,0 +1,38 @@
+name: Update Naver Place Ranking
+
+on:
+  schedule:
+    - cron: '0 * * * *' # 매 시간 정각에 실행
+
+jobs:
+  update-csv:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install requests-html pandas chardet
+
+    - name: Run update script
+      env:
+        NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+        NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+      run: python naver_place_serch_ranking_v5.py
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git add naver_place/keyword_rank_top5test1.csv
+        git commit -m "Update CSV file"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
