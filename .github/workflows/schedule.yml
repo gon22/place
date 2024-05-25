@@ -1,10 +1,8 @@
 name: Update Naver Place Ranking
 
-on:
-  schedule:
-    - cron: '*/5 * * * *' # 매 시간 정각에 실행.
-  # branch_protection_rule:
-  #   types: [created, edited, deleted]
+on: [push]
+  # schedule:
+  #   - cron: '*/5 * * * *' # 매 시간 정각에 실행
 
 jobs:
   update-csv:
