@@ -20,7 +20,8 @@ jobs:
     - name: Install dependencies
       run: |
         pip install lxml_html_clean
-        pip install requests-html pandas chardet
+        pip install pandas chardet
+        # requests-html 
 
     - name: Run update script
       env:
