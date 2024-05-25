@@ -32,8 +32,8 @@ jobs:
       run: |
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git add naver_place/keyword_rank_top5test1.csv
+        git add .
         git commit -m "Update CSV file"
-        git push
+        git push https://$GH_TOKEN@github.com/gon22/place.git HEAD:main
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
