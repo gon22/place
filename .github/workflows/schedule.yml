@@ -1,8 +1,10 @@
 name: Update Naver Place Ranking
 
 on:
-  schedule:
-    - cron: '*/5 * * * *' # 매 시간 정각에 실행
+  # schedule:
+  #   - cron: '*/5 * * * *' # 매 시간 정각에 실행
+  branch_protection_rule:
+    types: [created, edited, deleted]
 
 jobs:
   update-csv:
@@ -20,8 +22,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install lxml_html_clean
-        pip install pandas chardet
-        # requests-html 
+        pip install requests-html pandas chardet
 
     - name: Run update script
       env:
