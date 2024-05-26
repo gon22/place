@@ -2,88 +2,141 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from datetime import date as dt
 
 # csv 불러오기
 
+df = pd.read_csv('naver_place/keyword_rank_top5test1.csv', low_memory=False)
 @st.cache_data
 def long_function():
     return df
 
+# search를 search로 비꿈
+df.rename(columns={'search': 'keyword'}, inplace=True)
+######################################################
 
-# # 메인화면 타이틀
-# st.title(f'키워드 순위{}')
+# 'date' 열을 datetime 형식으로 변환
+df['date'] = pd.to_datetime(df['date'], errors='coerce')
 
-# # 메인화면 순위 컬럼 
-# col1, col2, col3 = st.columns(3)
-
-# with col1:
-#    st.header("A cat")
-#    st.image("https://static.streamlit.io/examples/cat.jpg")
-
-# with col2:
-#    st.header("A dog")
-#    st.image("https://static.streamlit.io/examples/dog.jpg")
-
-# with col3:
-#    st.header("An owl")
-#    st.image("https://static.streamlit.io/examples/owl.jpg")
-
-
-
-#####################
+# datetime 변환이 실패한 경우를 처리 (예: NaT로 설정된 값 제거)
+df = df.dropna(subset=['date'])
 
 # 날짜 및 시간 정보 추출
 df['date_only'] = df['date'].dt.date
 df['hour'] = df['date'].dt.hour
 
+# 오늘 날짜 필터링
+today = datetime.today().date()
+df['date_only'] = df['date'].dt.date
+today_data = df[df['date_only'] == today]
+
 # 오전/오후 구분
-df['period'] = df['hour'].apply(lambda x: '오전' if x < 12 else '오후')
+df['period'] = df['hour'].apply(lambda x: '오전' if x == 4 else '오후')
+df['ko_hour'] = df['hour'].apply(lambda x: 13 if x == 4 else 19)
 
-# 타이틀별, 날짜별, 오전/오후별 순위 확인
-rank_changes = df.pivot_table(index=['date_only', 'period'], columns='title', values='rank')
-
-# Streamlit 대시보드
-st.title('실시간 순위 차트')
-st.write(f'가장 최근 날짜: {df["date_only"].max()}')
-
-# 순위 변동 차트
-st.write('## 순위 변동 차트')
-st.dataframe(rank_changes)
-
-# 순위 차트 시각화 (오전/오후 구분)
-st.write('## 오전/오후 순위 차트')
-
-for title in df['title'].unique():
-    title_data = df[df['title'] == title]
-    title_data = title_data.pivot(index='date', columns='period', values='rank')
-    st.write(f'### {title}의 순위 변동')
-    st.line_chart(title_data)
-
-# 새로운 title 표시
-latest_date = df['date_only'].max()
-previous_date = df['date_only'].min()
-
-latest_data = df[df['date_only'] == latest_date]
-previous_data = df[df['date_only'] == previous_date]
-
-latest_titles = set(latest_data['title'])
-previous_titles = set(previous_data['title'])
-new_titles = latest_titles - previous_titles
-
-st.write('## 새로운 Title')
-if new_titles:
-    st.write('새로 추가된 title:')
-    for title in new_titles:
-        st.write(title)
-else:
-    st.write('새로운 title 없음')
+# 날짜 중복 제거 
+date_filter = list(set(df['date_only']))
 
 
+# 메인화면 타이틀
 
-#############
+st.header(f'{today} (today)')
 
-today_date = dt.today()
-st.write("오늘 날짜 (날짜 부분만):", today_date)
+# 날짜 선택 필터
+option = st.date_input("확인하고 싶은 날짜를 선택 하세요.", value=None)
+# option = st.selectbox(
+#     "확인하고 싶은 날짜를 선택 하세요.",
+#     (date_filter))
+
+# ######################################################
+# # 하루 전의 날짜 계산
+# one_day_before = date_filter - timedelta(days=1)
+
+# # 전날 데이터
+# yesterday_data = df[df['date_only'] == one_day_before]
+
+# # 전날 데이터에서 rank 열의 이름을 변경하여 오늘 데이터와 병합할 준비
+# yesterday_data = yesterday_data.rename(columns={'rank': 'rank_yesterday'})
+
+# # 오늘 데이터
+# today_data = df[df['date_only'] == option]
+
+# # 오늘 데이터에서 필요한 열만 선택
+# today_data = today_data[['keyword', 'rank']]
+
+# # 전날과 오늘 데이터를 키워드를 기준으로 병합
+# merged_data = pd.merge(today_data, yesterday_data, on='keyword', how='left')
+
+# # 전날 순위와 오늘 순위를 비교하여 순위 차이 계산
+# merged_data['rank_diff'] = merged_data['rank_yesterday'] - merged_data['rank']
+
+# # 순위 차이가 양수인 경우에만 '상승', 음수인 경우에는 '하락', 그 외에는 '-'을 지정
+# merged_data['rank_change'] = np.where(merged_data['rank_diff'] > 0, '상승', 
+#                                       np.where(merged_data['rank_diff'] < 0, '하락', '-'))
+
+
+# 필요한 열만 선택하여 출력
+# result_df = merged_data[['keyword', 'rank_yesterday', 'rank', 'rank_diff', 'rank_change']]
+# st.write(result_df)
+
+st.header('르템플 키워드 순위')
+a = df.loc[(df['keyword']=='을지로3가 맛집') & (df['date_only']==option) & (df['title']=='르템플'),'rank'].values
+b = df.loc[(df['keyword']=='을지로3가 와인') & (df['date_only']==option) & (df['title']=='르템플'),'rank'].values
+c = df.loc[(df['keyword']=='을지로3가 위스키') & (df['date_only']==option) & (df['title']=='르템플'),'rank'].values
+d = df.loc[(df['keyword']=='을지로3가 술집') & (df['date_only']==option) & (df['title']=='르템플'),'rank'].values
+tt = ''
+
+def main_rank(tt):
+    if not a:
+        tt = '순위 밖 또는 데이터 없음'
+        st.write(f'을지로3가 맛집 : {tt}')
+    else:
+        tt = a[0]
+        st.write(f'을지로3가 맛집 : {tt}위')
+    if not b:
+        tt = '순위 밖 또는 데이터 없음'
+        st.write(f'을지로3가 와인 : {tt}')
+    else:
+        tt = b[0]
+        st.write(f'을지로3가 와인 : {tt}위')
+    if not c:
+        tt = '순위 밖 또는 데이터 없음'
+        st.write(f'을지로3가 위스키 : {tt}')
+    else:
+        tt = c[0]
+        st.write(f'을지로3가 위스키 : {tt}위')
+    if not d:
+        tt = '순위 밖 또는 데이터 없음'
+        st.write(f'을지로3가 술집 : {tt}')
+    else:
+        tt = d[0]
+        st.write(f'을지로3가 술집 : {tt}위')
+
+main_rank(tt)
+    
+
+# 메인화면 순위 컬럼 
+st.header('플레이스 1~5순위')
+
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+   st.write("을지로3가 맛집")
+   df.loc[(df['keyword']=='을지로3가 맛집') & (df['date_only']==option) ,['rank','title','date_summary']]
+
+with col2:
+   st.write("을지로3가 와인")
+   df.loc[(df['keyword']=='을지로3가 와인') & (df['date_only']==option) ,['rank','title','date_summary']]
+
+with col3:
+   st.write("을지로3가 위스키")
+   df.loc[(df['keyword']=='을지로3가 위스키') & (df['date_only']==option) ,['rank','title','date_summary']]
+
+with col4:
+   st.write("을지로3가 술집")
+   df.loc[(df['keyword']=='을지로3가 술집') & (df['date_only']==option) ,['rank','title','date_summary']]
+
+##############
 
