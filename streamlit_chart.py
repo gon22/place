@@ -36,7 +36,6 @@ df['period'] = df['hour'].apply(lambda x: '오전' if x == 4 else '오후')
 df['ko_hour'] = df['hour'].apply(lambda x: 13 if x == 4 else 19)
 
 # 날짜 중복 제거 
-
 date_filter = list(set(df['date_only']))
 
 
@@ -44,11 +43,17 @@ date_filter = list(set(df['date_only']))
 
 st.header(f'{today} (today)')
 
-# 날짜 선택 필터
-option = st.date_input("확인하고 싶은 날짜를 선택 하세요.", value=None)
-# option = st.selectbox(
-#     "확인하고 싶은 날짜를 선택 하세요.",
-#     (date_filter))
+col1, col2= st.columns(2)
+
+with col1:
+    # 날짜 선택 필터
+   option = st.date_input("확인하고 싶은 날짜를 선택 하세요.", value=None)
+with col2:
+    # 오전오후 선택 필터
+    apm = ['오전','오후']
+    option_apm = st.selectbox(
+        "오전 (전날 pm07 - pm01), 오후 (pm01 - pm07)",
+        (apm))
 
 # ######################################################
 # # 하루 전의 날짜 계산
@@ -76,16 +81,15 @@ option = st.date_input("확인하고 싶은 날짜를 선택 하세요.", value=
 # merged_data['rank_change'] = np.where(merged_data['rank_diff'] > 0, '상승', 
 #                                       np.where(merged_data['rank_diff'] < 0, '하락', '-'))
 
-
 # 필요한 열만 선택하여 출력
 # result_df = merged_data[['keyword', 'rank_yesterday', 'rank', 'rank_diff', 'rank_change']]
 # st.write(result_df)
-
+st.divider()
 st.header('르템플 키워드 순위')
-a = df.loc[(df['keyword']=='을지로3가 맛집') & (df['date_only']==option) & (df['title']=='르템플'),'rank'].values
-b = df.loc[(df['keyword']=='을지로3가 와인') & (df['date_only']==option) & (df['title']=='르템플'),'rank'].values
-c = df.loc[(df['keyword']=='을지로3가 위스키') & (df['date_only']==option) & (df['title']=='르템플'),'rank'].values
-d = df.loc[(df['keyword']=='을지로3가 술집') & (df['date_only']==option) & (df['title']=='르템플'),'rank'].values
+a = df.loc[(df['keyword']=='을지로3가 맛집') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
+b = df.loc[(df['keyword']=='을지로3가 와인') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
+c = df.loc[(df['keyword']=='을지로3가 위스키') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
+d = df.loc[(df['keyword']=='을지로3가 술집') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
 tt = ''
 
 def main_rank(tt):
@@ -115,29 +119,25 @@ def main_rank(tt):
         st.write(f'을지로3가 술집 : {tt}위')
 
 main_rank(tt)
-    
 
+st.divider()
 # 메인화면 순위 컬럼 
 st.header('플레이스 1~5순위')
 
+# 각 키워드별 데이터프레임 생성 및 열 이름 변경
+df1 = df.loc[(df['keyword'] == '을지로3가 맛집') & (df['date_only'] == option), ['rank', 'title']].rename(columns={'title': '을지로3가 맛집'})
+df2 = df.loc[(df['keyword'] == '을지로3가 와인') & (df['date_only'] == option), ['rank', 'title']].rename(columns={'title': '을지로3가 와인'})
+df3 = df.loc[(df['keyword'] == '을지로3가 위스키') & (df['date_only'] == option), ['rank', 'title']].rename(columns={'title': '을지로3가 위스키'})
+df4 = df.loc[(df['keyword'] == '을지로3가 술집') & (df['date_only'] == option), ['rank', 'title']].rename(columns={'title': '을지로3가 술집'})
 
-col1, col2, col3, col4 = st.columns(4)
+# 'rank'를 기준으로 병합
+merged_df = df1.merge(df2, on='rank', how='outer')\
+               .merge(df3, on='rank', how='outer')\
+               .merge(df4, on='rank', how='outer')
 
-with col1:
-   st.write("을지로3가 맛집")
-   df.loc[(df['keyword']=='을지로3가 맛집') & (df['date_only']==option) ,['rank','title','date_summary']]
+# 'rank' 기준으로 정렬하고 인덱스로 설정
+merged_df = merged_df.sort_values(by='rank').set_index('rank')
 
-with col2:
-   st.write("을지로3가 와인")
-   df.loc[(df['keyword']=='을지로3가 와인') & (df['date_only']==option) ,['rank','title','date_summary']]
-
-with col3:
-   st.write("을지로3가 위스키")
-   df.loc[(df['keyword']=='을지로3가 위스키') & (df['date_only']==option) ,['rank','title','date_summary']]
-
-with col4:
-   st.write("을지로3가 술집")
-   df.loc[(df['keyword']=='을지로3가 술집') & (df['date_only']==option) ,['rank','title','date_summary']]
-
-##############
-
+# 정렬된 데이터프레임 출력
+# st.write("랭크 기준 가로 정렬된 데이터프레임:")
+st.dataframe(merged_df)
