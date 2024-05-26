@@ -11,7 +11,7 @@ def long_function():
     df = pd.read_csv('naver_place/keyword_rank_top5test1.csv', low_memory=False)
     return df
 
-long_function()
+df = long_function()
 
 # # 메인화면 타이틀
 # st.title(f'키워드 순위{}')
