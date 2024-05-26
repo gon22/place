@@ -6,10 +6,10 @@ from datetime import datetime
 from datetime import date as dt
 
 # csv 불러오기
-df = pd.read_csv('naver_place/keyword_rank_top5test1.csv', low_memory=False)
 
 @st.cache_data
 def long_function():
+    df = pd.read_csv('naver_place/keyword_rank_top5test1.csv', low_memory=False)
     return df
 
 
@@ -79,3 +79,4 @@ def long_function():
 today_date = dt.today()
 st.write("오늘 날짜 (날짜 부분만):", today_date)
 df
+
