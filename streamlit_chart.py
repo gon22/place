@@ -33,7 +33,7 @@ long_function()
 
 
 # 날짜별 순위 변동 확인
-# df['date'] = pd.to_datetime(df['date'])
+df['date'] = pd.to_datetime(df['date'])
 latest_date = df['date'].max()
 previous_date = df['date'].min()
 
