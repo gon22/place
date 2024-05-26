@@ -122,7 +122,7 @@ main_rank(tt)
 
 st.divider()
 # 메인화면 순위 컬럼 
-st.header('플레이스 1~5순위')
+st.header('플레이스 키워드 1~5순위')
 
 # 각 키워드별 데이터프레임 생성 및 열 이름 변경
 df1 = df.loc[(df['keyword'] == '을지로3가 맛집') & (df['date_only'] == option), ['rank', 'title']].rename(columns={'title': '을지로3가 맛집'})
