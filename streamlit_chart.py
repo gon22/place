@@ -34,31 +34,44 @@ def long_function():
 
 #####################
 
-# 날짜별 순위 변동 확인
-df['date'] = pd.to_datetime(df['date'])
-latest_date = df['date'].max()
-previous_date = df['date'].min()
+# 날짜 및 시간 정보 추출
+df['date_only'] = df['date'].dt.date
+df['hour'] = df['date'].dt.hour
 
-# 가장 최근 날짜와 이전 날짜 데이터 비교
-latest_data = df[df['date'] == latest_date]
-previous_data = df[df['date'] == previous_date]
+# 오전/오후 구분
+df['period'] = df['hour'].apply(lambda x: '오전' if x < 12 else '오후')
 
-# 새로운 title 및 순위 변동 확인
-latest_titles = set(latest_data['title'])
-previous_titles = set(previous_data['title'])
-new_titles = latest_titles - previous_titles
-rank_changes = latest_data[latest_data['title'].isin(previous_titles)]
+# 타이틀별, 날짜별, 오전/오후별 순위 확인
+rank_changes = df.pivot_table(index=['date_only', 'period'], columns='title', values='rank')
 
 # Streamlit 대시보드
 st.title('실시간 순위 차트')
-st.write(f'가장 최근 날짜: {latest_date.strftime("%Y-%m-%d")}')
-st.write(f'이전 날짜: {previous_date.strftime("%Y-%m-%d")}')
+st.write(f'가장 최근 날짜: {df["date_only"].max()}')
 
 # 순위 변동 차트
 st.write('## 순위 변동 차트')
 st.dataframe(rank_changes)
 
+# 순위 차트 시각화 (오전/오후 구분)
+st.write('## 오전/오후 순위 차트')
+
+for title in df['title'].unique():
+    title_data = df[df['title'] == title]
+    title_data = title_data.pivot(index='date', columns='period', values='rank')
+    st.write(f'### {title}의 순위 변동')
+    st.line_chart(title_data)
+
 # 새로운 title 표시
+latest_date = df['date_only'].max()
+previous_date = df['date_only'].min()
+
+latest_data = df[df['date_only'] == latest_date]
+previous_data = df[df['date_only'] == previous_date]
+
+latest_titles = set(latest_data['title'])
+previous_titles = set(previous_data['title'])
+new_titles = latest_titles - previous_titles
+
 st.write('## 새로운 Title')
 if new_titles:
     st.write('새로 추가된 title:')
@@ -66,10 +79,6 @@ if new_titles:
         st.write(title)
 else:
     st.write('새로운 title 없음')
-
-# 순위 차트 시각화
-st.write('## 순위 차트')
-st.line_chart(df.pivot(index='date', columns='title', values='rank'))
 
 
 
