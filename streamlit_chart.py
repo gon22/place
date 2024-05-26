@@ -78,4 +78,4 @@ def long_function():
 
 today_date = dt.today()
 st.write("오늘 날짜 (날짜 부분만):", today_date)
-df.head()
+df
