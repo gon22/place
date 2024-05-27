@@ -94,70 +94,71 @@ with col2:
 # result_df = merged_data[['keyword', 'rank_yesterday', 'rank', 'rank_diff', 'rank_change']]
 # st.write(result_df)
 st.divider()
-st.header('르템플 키워드 순위')
-a = df.loc[(df['keyword']=='을지로3가 맛집') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
-b = df.loc[(df['keyword']=='을지로3가 와인') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
-c = df.loc[(df['keyword']=='을지로3가 위스키') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
-d = df.loc[(df['keyword']=='을지로3가 술집') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
-tt = ''
+# st.header('르템플 키워드 순위')
+# a = df.loc[(df['keyword']=='을지로3가 맛집') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
+# b = df.loc[(df['keyword']=='을지로3가 와인') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
+# c = df.loc[(df['keyword']=='을지로3가 위스키') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
+# d = df.loc[(df['keyword']=='을지로3가 술집') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
+# tt = ''
 
-def search_data_no(key,tt):
-    _LOREM_IPSUM = key + ' ' +':' + '　' + str(tt) + ''
-    for word in _LOREM_IPSUM.split(" "):
-        yield word + ' '
-        time.sleep(0.02)
+# def search_data_no(key,tt):
+#     _LOREM_IPSUM = key + ' ' +':' + '　' + str(tt) + ''
+#     for word in _LOREM_IPSUM.split(" "):
+#         yield word + ' '
+#         time.sleep(0.02)
 
-def search_data(key,tt):
-    _LOREM_IPSUM = key + ' ' +'  :  ' + '　'+ str(tt) + '위'
-    for word in _LOREM_IPSUM.split(" "):
-        yield word + ' '
-        time.sleep(0.02)
+# def search_data(key,tt):
+#     _LOREM_IPSUM = key + ' ' +'  :  ' + '　'+ str(tt) + '위'
+#     for word in _LOREM_IPSUM.split(" "):
+#         yield word + ' '
+#         time.sleep(0.02)
 
-def main_rank(tt):
-    if not a:
-        tt = '　-　'
-        key = '을지로3가 맛집'
-        # st.write(f'을지로3가 맛집 : {tt}')
-        st.write_stream(search_data_no(key,tt))
-    else:
-        tt = a[0]
-        key = '을지로3가 맛집'
-        # st.write(f'을지로3가 맛집 : {tt}위')
-        st.write_stream(search_data(key,tt))
-    if not b:
-        tt = '　-　'
-        key = '을지로3가 와인'
-        # st.write(f'을지로3가 와인 : {tt}')
-        st.write_stream(search_data_no(key,tt))
-    else:
-        tt = b[0]
-        key = '을지로3가 와인'
-        # st.write(f'을지로3가 와인 : {tt}위')
-        st.write_stream(search_data(key,tt))
-    if not c:
-        tt = '　-　'
-        key = '을지로3가 위스키'
-        # st.write(f'을지로3가 위스키 : {tt}')
-        st.write_stream(search_data_no(key,tt))
-    else:
-        tt = c[0]
-        key = '을지로3가 위스키'
-        # st.write(f'을지로3가 위스키 : {tt}위')
-        st.write_stream(search_data(key,tt))
-    if not d:
-        tt = '　-　'
-        key = '을지로3가 술집'
-        # st.write(f'을지로3가 술집 : {tt}')
-        st.write_stream(search_data_no(key,tt))
-    else:
-        tt = d[0]
-        key = '을지로3가 술집'
-        # st.write(f'을지로3가 술집 : {tt}위')
-        st.write_stream(search_data(key,tt))
+# def main_rank(tt):
+#     if not a:
+#         tt = '　-　'
+#         key = '을지로3가 맛집'
+#         # st.write(f'을지로3가 맛집 : {tt}')
+#         st.write_stream(search_data_no(key,tt))
+#     else:
+#         tt = a[0]
+#         key = '을지로3가 맛집'
+#         # st.write(f'을지로3가 맛집 : {tt}위')
+#         st.write_stream(search_data(key,tt))
+#     if not b:
+#         tt = '　-　'
+#         key = '을지로3가 와인'
+#         # st.write(f'을지로3가 와인 : {tt}')
+#         st.write_stream(search_data_no(key,tt))
+#     else:
+#         tt = b[0]
+#         key = '을지로3가 와인'
+#         # st.write(f'을지로3가 와인 : {tt}위')
+#         st.write_stream(search_data(key,tt))
+#     if not c:
+#         tt = '　-　'
+#         key = '을지로3가 위스키'
+#         # st.write(f'을지로3가 위스키 : {tt}')
+#         st.write_stream(search_data_no(key,tt))
+#     else:
+#         tt = c[0]
+#         key = '을지로3가 위스키'
+#         # st.write(f'을지로3가 위스키 : {tt}위')
+#         st.write_stream(search_data(key,tt))
+#     if not d:
+#         tt = '　-　'
+#         key = '을지로3가 술집'
+#         # st.write(f'을지로3가 술집 : {tt}')
+#         st.write_stream(search_data_no(key,tt))
+#     else:
+#         tt = d[0]
+#         key = '을지로3가 술집'
+#         # st.write(f'을지로3가 술집 : {tt}위')
+#         st.write_stream(search_data(key,tt))
 
-main_rank(tt)
+# main_rank(tt)
 
-st.divider()
+# st.divider()
+
 # 메인화면 순위 컬럼 
 st.header('플레이스 키워드 top5')
 
