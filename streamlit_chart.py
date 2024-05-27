@@ -7,6 +7,7 @@ from datetime import date as dt
 import time
 
 import plotly.express as px
+import pytz
 
 # csv 불러오기
 
@@ -29,9 +30,9 @@ df = df.dropna(subset=['date'])
 df['date_only'] = df['date'].dt.date
 df['hour'] = df['date'].dt.hour
 
-# 날짜의 시간을 한국시간으로 9더함
-df['kodate'] = df['date'] + pd.Timedelta(hours=9)
-df['kodate']
+# 시간대 설정
+KST = pytz.timezone('Asia/Seoul')
+df['kodate'] = df['date'].dt.tz_localize('UTC').dt.tz_convert(KST)
 
 # 오늘 날짜 필터링
 today = datetime.today().date()
@@ -199,7 +200,7 @@ filtered_df = st.selectbox(
         options=filter)
 
 # Plotly 선 그래프 생성
-fig = px.line(filter[filtered_df], x="date", y="rank", color="title", line_group="title", markers=True)
+fig = px.line(filter[filtered_df], x="kodate", y="rank", color="title", line_group="title", markers=True)
 
 # y축을 반대로 설정
 fig.update_yaxes(autorange='reversed')
