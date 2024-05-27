@@ -49,19 +49,19 @@ date_filter = list(set(df['date_only']))
 
 # 메인화면 타이틀
 
-st.header(f'{today} (today)')
+st.header(f'플레이스 TOP5')
 
 col1, col2= st.columns(2)
 
 with col1:
     # 날짜 선택 필터
-   option = st.date_input("날짜를 선택", help='2024-05-26 이후부터',
+   option = st.date_input("날짜", help='2024-05-26 이후부터 가능',
                           min_value=datetime(2024, 5, 26),value=None)
 with col2:
     # 오전오후 선택 필터
     apm = ['오전','오후']
     option_apm = st.selectbox(
-        label="시점", help="오전 (전날 pm07 - pm01), 오후 (pm01 - pm07)",
+        label="시점", help="오전 (pm01), 오후 (pm07)",
         options=apm)
 
 # ######################################################
@@ -93,7 +93,7 @@ with col2:
 # 필요한 열만 선택하여 출력
 # result_df = merged_data[['keyword', 'rank_yesterday', 'rank', 'rank_diff', 'rank_change']]
 # st.write(result_df)
-st.divider()
+# st.divider()
 # st.header('르템플 키워드 순위')
 # a = df.loc[(df['keyword']=='을지로3가 맛집') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
 # b = df.loc[(df['keyword']=='을지로3가 와인') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
@@ -160,7 +160,7 @@ st.divider()
 # st.divider()
 
 # 메인화면 순위 컬럼 
-st.header('플레이스 키워드 top5')
+# st.header('플레이스 키워드 top5')
 
 # 각 키워드별 데이터프레임 생성 및 열 이름 변경
 df1 = df.loc[(df['keyword'] == '을지로3가 맛집') & (df['date_only'] == option), ['rank', 'title']].rename(columns={'title': '을지로3가 맛집'})
@@ -195,9 +195,9 @@ df33 = df[df['keyword'] == '을지로3가 위스키']
 df44 = df[df['keyword'] == '을지로3가 술집']
 
 filter = {'을지로3가 맛집': df11, '을지로3가 와인': df22, '을지로3가 위스키': df33, '을지로3가 술집': df44}
-
+st.header('업체 순위 변동 차트')
 filtered_df = st.selectbox(
-        label="업체 순위 변동 차트", help="키워드 선택하여 top5 업체 순위 변동 확인",
+        label="", help="키워드 선택하여 top5 업체 순위 변동 확인",
         options=filter)
 
 # Plotly 선 그래프 생성
