@@ -4,6 +4,9 @@ import numpy as np
 
 from datetime import datetime, timedelta
 from datetime import date as dt
+import time
+
+import plotly.express as px
 
 # csv 불러오기
 
@@ -26,6 +29,10 @@ df = df.dropna(subset=['date'])
 df['date_only'] = df['date'].dt.date
 df['hour'] = df['date'].dt.hour
 
+# 날짜의 시간을 한국시간으로 9더함
+df['kodate'] = df['date'] + pd.Timedelta(hours=9)
+df['kodate']
+
 # 오늘 날짜 필터링
 today = datetime.today().date()
 df['date_only'] = df['date'].dt.date
@@ -47,13 +54,14 @@ col1, col2= st.columns(2)
 
 with col1:
     # 날짜 선택 필터
-   option = st.date_input("확인하고 싶은 날짜를 선택 하세요.", value=None)
+   option = st.date_input("날짜를 선택", help='2024-05-26 이후부터',
+                          min_value=datetime(2024, 5, 26),value=None)
 with col2:
     # 오전오후 선택 필터
     apm = ['오전','오후']
     option_apm = st.selectbox(
-        "오전 (전날 pm07 - pm01), 오후 (pm01 - pm07)",
-        (apm))
+        label="시점", help="오전 (전날 pm07 - pm01), 오후 (pm01 - pm07)",
+        options=apm)
 
 # ######################################################
 # # 하루 전의 날짜 계산
@@ -92,37 +100,65 @@ c = df.loc[(df['keyword']=='을지로3가 위스키') & (df['date_only']==option
 d = df.loc[(df['keyword']=='을지로3가 술집') & (df['date_only']==option) & (df['title']=='르템플') & (df['period']==option_apm),'rank'].values
 tt = ''
 
+def search_data_no(key,tt):
+    _LOREM_IPSUM = key + ' ' +':' + '　' + str(tt) + ''
+    for word in _LOREM_IPSUM.split(" "):
+        yield word + ' '
+        time.sleep(0.02)
+
+def search_data(key,tt):
+    _LOREM_IPSUM = key + ' ' +'  :  ' + '　'+ str(tt) + '위'
+    for word in _LOREM_IPSUM.split(" "):
+        yield word + ' '
+        time.sleep(0.02)
+
 def main_rank(tt):
     if not a:
-        tt = '순위 밖 또는 데이터 없음'
-        st.write(f'을지로3가 맛집 : {tt}')
+        tt = '　-　'
+        key = '을지로3가 맛집'
+        # st.write(f'을지로3가 맛집 : {tt}')
+        st.write_stream(search_data_no(key,tt))
     else:
         tt = a[0]
-        st.write(f'을지로3가 맛집 : {tt}위')
+        key = '을지로3가 맛집'
+        # st.write(f'을지로3가 맛집 : {tt}위')
+        st.write_stream(search_data(key,tt))
     if not b:
-        tt = '순위 밖 또는 데이터 없음'
-        st.write(f'을지로3가 와인 : {tt}')
+        tt = '　-　'
+        key = '을지로3가 와인'
+        # st.write(f'을지로3가 와인 : {tt}')
+        st.write_stream(search_data_no(key,tt))
     else:
         tt = b[0]
-        st.write(f'을지로3가 와인 : {tt}위')
+        key = '을지로3가 와인'
+        # st.write(f'을지로3가 와인 : {tt}위')
+        st.write_stream(search_data(key,tt))
     if not c:
-        tt = '순위 밖 또는 데이터 없음'
-        st.write(f'을지로3가 위스키 : {tt}')
+        tt = '　-　'
+        key = '을지로3가 위스키'
+        # st.write(f'을지로3가 위스키 : {tt}')
+        st.write_stream(search_data_no(key,tt))
     else:
         tt = c[0]
-        st.write(f'을지로3가 위스키 : {tt}위')
+        key = '을지로3가 위스키'
+        # st.write(f'을지로3가 위스키 : {tt}위')
+        st.write_stream(search_data(key,tt))
     if not d:
-        tt = '순위 밖 또는 데이터 없음'
-        st.write(f'을지로3가 술집 : {tt}')
+        tt = '　-　'
+        key = '을지로3가 술집'
+        # st.write(f'을지로3가 술집 : {tt}')
+        st.write_stream(search_data_no(key,tt))
     else:
         tt = d[0]
-        st.write(f'을지로3가 술집 : {tt}위')
+        key = '을지로3가 술집'
+        # st.write(f'을지로3가 술집 : {tt}위')
+        st.write_stream(search_data(key,tt))
 
 main_rank(tt)
 
 st.divider()
 # 메인화면 순위 컬럼 
-st.header('플레이스 키워드 1~5순위')
+st.header('플레이스 키워드 top5')
 
 # 각 키워드별 데이터프레임 생성 및 열 이름 변경
 df1 = df.loc[(df['keyword'] == '을지로3가 맛집') & (df['date_only'] == option), ['rank', 'title']].rename(columns={'title': '을지로3가 맛집'})
@@ -141,3 +177,36 @@ merged_df = merged_df.sort_values(by='rank').set_index('rank')
 # 정렬된 데이터프레임 출력
 # st.write("랭크 기준 가로 정렬된 데이터프레임:")
 st.dataframe(merged_df)
+
+
+###################
+
+# asd = df.title.copy()
+# cc = asd.drop_duplicates()
+# cc
+
+
+# 특정 키워드로 필터링된 데이터
+df11 = df[df['keyword'] == '을지로3가 맛집']
+df22 = df[df['keyword'] == '을지로3가 와인']
+df33 = df[df['keyword'] == '을지로3가 위스키']
+df44 = df[df['keyword'] == '을지로3가 술집']
+
+filter = {'을지로3가 맛집': df11, '을지로3가 와인': df22, '을지로3가 위스키': df33, '을지로3가 술집': df44}
+
+filtered_df = st.selectbox(
+        label="업체 순위 변동 차트", help="키워드 선택하여 top5 업체 순위 변동 확인",
+        options=filter)
+
+# Plotly 선 그래프 생성
+fig = px.line(filter[filtered_df], x="kodate", y="rank", color="title", line_group="title", markers=True)
+
+# y축을 반대로 설정
+fig.update_yaxes(autorange='reversed')
+fig.update_layout(xaxis_title="Date", yaxis_title="Rank", showlegend=True)
+
+# 스트림릿에 Plotly 그래프 표시
+st.plotly_chart(fig, use_container_width=True)
+
+
+##################
