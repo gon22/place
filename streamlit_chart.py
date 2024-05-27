@@ -199,7 +199,7 @@ filtered_df = st.selectbox(
         options=filter)
 
 # Plotly 선 그래프 생성
-fig = px.line(filter[filtered_df], x="kodate", y="rank", color="title", line_group="title", markers=True)
+fig = px.line(filter[filtered_df], x="date", y="rank", color="title", line_group="title", markers=True)
 
 # y축을 반대로 설정
 fig.update_yaxes(autorange='reversed')
