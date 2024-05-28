@@ -61,7 +61,7 @@ with col1:
         help='2024-05-26 이후부터 가능',
         min_value=datetime(2024, 5, 26),
         # value=datetime(2024, 5, 26)  # 초기값 설정
-        value=today  # 초기값을 오늘 날짜로 설정
+        value=datetime(today.year, today.month, today.day)  # 초기값 설정
     )
 with col2:
     # 오전/오후 선택 필터
