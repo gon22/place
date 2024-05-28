@@ -67,7 +67,8 @@ with col2:
     option_apm = st.selectbox(
         label="시점", 
         help="오전 (pm01), 오후 (pm07)",
-        options=apm
+        options=apm,
+        value=today  # 초기값을 오늘 날짜로 설정
     )
 
 
