@@ -161,12 +161,11 @@ with col2:
 
 # 메인화면 순위 컬럼 
 # st.header('플레이스 키워드 top5')
-
 # 각 키워드별 데이터프레임 생성 및 열 이름 변경
-df1 = df.loc[(df['keyword'] == '을지로3가 맛집') & (df['date_only'] == option), ['rank', 'title']].rename(columns={'title': '을지로3가 맛집'})
-df2 = df.loc[(df['keyword'] == '을지로3가 와인') & (df['date_only'] == option), ['rank', 'title']].rename(columns={'title': '을지로3가 와인'})
-df3 = df.loc[(df['keyword'] == '을지로3가 위스키') & (df['date_only'] == option), ['rank', 'title']].rename(columns={'title': '을지로3가 위스키'})
-df4 = df.loc[(df['keyword'] == '을지로3가 술집') & (df['date_only'] == option), ['rank', 'title']].rename(columns={'title': '을지로3가 술집'})
+df1 = df.loc[(df['keyword'] == '을지로3가 맛집') & (df['date_only'] == option) & (df['period'] == option_apm), ['rank', 'title']].rename(columns={'title': '을지로3가 맛집'})
+df2 = df.loc[(df['keyword'] == '을지로3가 와인') & (df['date_only'] == option) & (df['period'] == option_apm), ['rank', 'title']].rename(columns={'title': '을지로3가 와인'})
+df3 = df.loc[(df['keyword'] == '을지로3가 위스키') & (df['date_only'] == option) & (df['period'] == option_apm), ['rank', 'title']].rename(columns={'title': '을지로3가 위스키'})
+df4 = df.loc[(df['keyword'] == '을지로3가 술집') & (df['date_only'] == option) & (df['period'] == option_apm), ['rank', 'title']].rename(columns={'title': '을지로3가 술집'})
 
 # 'rank'를 기준으로 병합
 merged_df = df1.merge(df2, on='rank', how='outer')\
@@ -212,3 +211,4 @@ st.plotly_chart(fig, use_container_width=True)
 
 
 ##################
+
