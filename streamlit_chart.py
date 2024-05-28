@@ -73,18 +73,21 @@ with col2:
 
 # 키워드에 따른 데이터 필터링 함수
 def filter_data(keyword, date, period):
-    return df.loc[(df['keyword'] == keyword) & (df['date_only'] == date) & (df['period'] == period), ['rank', 'title']]
+    return df.loc[(df['keyword'] == keyword) & (df['date_only'] == date) & (df['period'] == period), ['rank', 'title']].rename(columns={'title': keyword})
 
 # 키워드별 데이터프레임 생성 및 열 이름 변경
-df1 = filter_data('을지로3가 맛집', option, option_apm).rename(columns={'title': '을지로3가 맛집'})
-df2 = filter_data('을지로3가 와인', option, option_apm).rename(columns={'title': '을지로3가 와인'})
-df3 = filter_data('을지로3가 위스키', option, option_apm).rename(columns={'title': '을지로3가 위스키'})
-df4 = filter_data('을지로3가 술집', option, option_apm).rename(columns={'title': '을지로3가 술집'})
+df1 = filter_data('을지로3가 맛집', option, option_apm)
+df2 = filter_data('을지로3가 와인', option, option_apm)
+df3 = filter_data('을지로3가 위스키', option, option_apm)
+df4 = filter_data('을지로3가 술집', option, option_apm)
 
 # 'rank'를 기준으로 병합
 merged_df = df1.merge(df2, on='rank', how='outer')\
                .merge(df3, on='rank', how='outer')\
                .merge(df4, on='rank', how='outer')
+
+# 중복된 행 제거
+merged_df = merged_df.drop_duplicates(subset='rank')
 
 # 'rank' 기준으로 정렬하고 인덱스로 설정
 merged_df = merged_df.sort_values(by='rank').set_index('rank')
