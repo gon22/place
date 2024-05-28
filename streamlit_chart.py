@@ -46,7 +46,8 @@ df['ko_hour'] = df['hour'].apply(lambda x: 13 if x == 4 else 19)
 # 날짜 중복 제거 
 date_filter = list(set(df['date_only']))
 
-
+# 현재 날짜 가져오기
+today = datetime.today()
 # 메인화면 타이틀
 
 st.header(f'플레이스 TOP5')
