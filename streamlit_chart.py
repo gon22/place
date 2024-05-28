@@ -95,12 +95,7 @@ merged_df = merged_df.sort_values(by='rank').set_index('rank')
 # 정렬된 데이터프레임 출력
 st.dataframe(merged_df)
 
-###################
-
-# asd = df.title.copy()
-# cc = asd.drop_duplicates()
-# cc
-
+#######################
 
 # 특정 키워드로 필터링된 데이터
 df11 = df[df['keyword'] == '을지로3가 맛집']
@@ -119,7 +114,20 @@ fig = px.line(filter[filtered_df], x="kodate", y="rank", color="title", line_gro
 
 # y축을 반대로 설정
 fig.update_yaxes(autorange='reversed')
-fig.update_layout(xaxis_title="Date", yaxis_title="Rank", showlegend=True)
+
+# 레전드를 위쪽에 배치
+fig.update_layout(
+    xaxis_title="Date", 
+    yaxis_title="Rank", 
+    showlegend=True,
+    legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="center",
+        x=0.5
+    )
+)
 
 # 스트림릿에 Plotly 그래프 표시
 st.plotly_chart(fig, use_container_width=True)
