@@ -136,3 +136,15 @@ st.plotly_chart(fig, use_container_width=True)
 
 ##################
 
+html_code = """
+<html>
+  <head>
+    <link rel="apple-touch-icon" href="/images/icon-192.png" />
+    <link rel="apple-touch-icon" href="/images/icon-512.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <!-- 생략 -->
+  </head>
+</html>
+"""
+
+st.write(html_code, unsafe_allow_html=True)
