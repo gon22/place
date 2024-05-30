@@ -70,7 +70,7 @@ social = {
 
 buttons = [
             {
-                "title": "웹으로 이동",
+                "title": "웹으로",
                 "link": {
                     "web_url": "http://www.daum.net",
                     "mobile_web_url": "http://m.daum.net"
