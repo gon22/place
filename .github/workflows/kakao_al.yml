@@ -1,4 +1,4 @@
-name: Update Naver Place Ranking
+name: Update Kakao
 
 on: [push]
   # schedule:
