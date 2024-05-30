@@ -56,14 +56,26 @@ def place_top5(client_id, client_secret, query, *regions):
 
 df = place_top5(client_id, client_secret, query, regions)
 
+# 연도, 월, 일 추출
 df['year'] = df['date'].dt.year
 df['month'] = df['date'].dt.month
 df['day'] = df['date'].dt.day
+
+# 시간 정보 추출
+df['hour'] = df['date'].dt.hour
+df['minute'] = df['date'].dt.minute
+df['second'] = df['date'].dt.second
+
+# 날짜 요약
 df['date_summary'] = df['date'].dt.date
+
+# 시간 요약 (hh:mm:ss)
+df['time_summary'] = df['date'].dt.time
 
 
 # csv에 보여줄 내용
 place = df.copy()
+
 
 # 파일 경로 설정
 file_path = 'naver_place/keyword_rank_top5test1.csv'
