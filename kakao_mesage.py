@@ -5,7 +5,7 @@ API = Message(service_key = "535beb56f41f8c1d92b5f87300a2fd96")
 auth_url = API.get_url_for_generating_code()
 print(auth_url)
 
-url = ""
+url = "https://localhost:5000/?code=vgY-bEYoPXVufalM7XWCwGDH-ApHedpj-9ddDRRA3FoxdWTWBuDaywAAAAQKKwzUAAABj8ipH8PE017PSiBv1Q"
 
 access_token = API.get_access_token_by_redirected_url(url)
 API.set_access_token(access_token)
