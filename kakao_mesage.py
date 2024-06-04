@@ -1,14 +1,59 @@
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
 from PyKakao import Message
 
-API = Message(service_key = "535beb56f41f8c1d92b5f87300a2fd96")
-
+# API 설정
+API = Message(service_key="535beb56f41f8c1d92b5f87300a2fd96")
 auth_url = API.get_url_for_generating_code()
 print(auth_url)
 
-url = "https://localhost:5000/?code=vgY-bEYoPXVufalM7XWCwGDH-ApHedpj-9ddDRRA3FoxdWTWBuDaywAAAAQKKwzUAAABj8ipH8PE017PSiBv1Q"
+# Selenium을 이용하여 웹 브라우저 자동화
+driver = webdriver.Chrome()  # ChromeDriver 경로를 지정하거나 환경 변수에 추가해야 합니다.
+driver.get(auth_url)
 
-access_token = API.get_access_token_by_redirected_url(url)
+# 아이디 입력창
+id = driver.find_element(By.CSS_SELECTOR, "#loginId--1")
+
+# 클릭하도록 설정
+id.click()
+
+# 키보드 입력 설정
+id.send_keys("kwakyh7@nate.com") # "네이버 아이디"에는 본인 네이버 아이디 입력
+
+# 비밀번호 입력창 찾기
+pw = driver.find_element(By.CSS_SELECTOR, "#password--2")
+# 클릭하도록 설정
+pw.click()
+# 키보드 입력 설정
+pw.send_keys("dkrlwmf1959?") # "네이버 비밀번호"에는 본인 네이버 비밀번호 입력
+
+# 로그인 버튼 클릭
+login_btn = driver.find_element(By.CSS_SELECTOR, ".btn_g.highlight.submit")
+login_btn.click()
+
+# 사용자 입력 대기 (로그인)
+time.sleep(5)  # 로그인 시간을 충분히 줍니다. 필요에 따라 조정하세요.
+
+# 로그인 후 리다이렉트된 URL을 가져옴
+redirected_url = driver.current_url
+print(redirected_url)
+
+code = redirected_url.split('code=')
+
+
+# 브라우저 종료
+driver.quit()
+
+# Access Token
+access_token = API.get_access_token_by_redirected_url('code='+"".join(code[1]))
 API.set_access_token(access_token)
+
+# # Access Token이 만료될 경우, Refresh Token을 사용하여 새 토큰 발급
+# new_access_token = API.refresh_access_token(refresh_token)
+# API.set_access_token(new_access_token)
 
 # 메시지 유형 - 피드
 message_type = "feed"
@@ -70,7 +115,7 @@ social = {
 
 buttons = [
             {
-                "title": "웹으로.",
+                "title": "웹으로 이동",
                 "link": {
                     "web_url": "http://www.daum.net",
                     "mobile_web_url": "http://m.daum.net"
