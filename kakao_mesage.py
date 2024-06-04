@@ -1,3 +1,5 @@
+# Chrome driver 자동 업데이트
+from webdriver_manager.chrome import ChromeDriverManager 
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -5,13 +7,21 @@ from selenium.webdriver.common.keys import Keys
 import time
 from PyKakao import Message
 
+from selenium.webdriver.chrome.options import Options
+
+options = Options()
+
+options.add_argument("--headless")
+options.add_argument('--no-sandbox')
+
+
 # API 설정
 API = Message(service_key="535beb56f41f8c1d92b5f87300a2fd96")
 auth_url = API.get_url_for_generating_code()
 print(auth_url)
 
 # Selenium을 이용하여 웹 브라우저 자동화
-driver = webdriver.Chrome()  # ChromeDriver 경로를 지정하거나 환경 변수에 추가해야 합니다.
+driver = webdriver.Chrome(options=options)  # ChromeDriver 경로를 지정하거나 환경 변수에 추가해야 합니다.
 driver.get(auth_url)
 
 # 아이디 입력창
