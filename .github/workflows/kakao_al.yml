@@ -21,6 +21,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install PyKakao
+        pip install webdriver_manager
         pip install selenium
 
     - name: Run update script
