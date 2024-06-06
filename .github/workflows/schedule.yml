@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install lxml_html_clean
-        pip install requests-html pandas chardet
+        pip install requests requests-html pandas chardet
         pip install PyKakao
 
     - name: Run update script
