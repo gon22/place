@@ -71,6 +71,7 @@ redirected_url = driver.current_url
 print(redirected_url)
 
 code = redirected_url.split('code=')
+print(code)
 
 # 브라우저 종료
 driver.quit()
