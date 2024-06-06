@@ -20,6 +20,7 @@ jobs:
         pip install lxml_html_clean
         pip install requests requests-html pandas chardet
         pip install streamlit
+        pip install plotly
 
     - name: Run update script
       env:
