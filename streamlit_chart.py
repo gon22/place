@@ -276,10 +276,11 @@ except:
     st.write('')
 
 # Add a button to copy text to clipboard
-if st.button("텍스트 복사"):
-    pyperclip.copy(cl)
-    st.success("성공!")
+# if st.button("텍스트 복사"):
+#     pyperclip.copy(cl)
+#     st.success("성공!")
 
+st.download_button("Download some text", cl)
     
 
     
