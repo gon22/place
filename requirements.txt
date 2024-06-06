@@ -5,4 +5,4 @@ git+https://github.com/WooilJeong/PyKakao.git
 
 selenium
 bs4
-wget "https://raw.github.com/dustinkim86/chromedriver_download/master/download_chromedriver.py"
+
