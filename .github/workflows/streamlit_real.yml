@@ -26,4 +26,4 @@ jobs:
       env:
         NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
         NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
-      run: python streamlit_chart.py
+      run: streamlit run streamlit_chart.py
