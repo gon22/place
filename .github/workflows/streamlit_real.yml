@@ -1,0 +1,27 @@
+name: streamlit realtime
+
+on: [push]
+
+jobs:
+  update-streamlit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install lxml_html_clean
+        pip install requests requests-html pandas chardet
+
+    - name: Run update script
+      env:
+        NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+        NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+      run: python stramlit_chart.py
