@@ -22,62 +22,62 @@ client_secret = os.getenv("NAVER_CLIENT_SECRET")
 # client_secret = "SSKeYoapXo"
 
 
-regions = '서울'
-query = ['을지로3가 맛집','을지로3가 와인','을지로3가 위스키', '을지로3가 술집']
+# regions = '서울'
+# query = ['을지로3가 맛집','을지로3가 와인','을지로3가 위스키', '을지로3가 술집']
 
-def place_top5(client_id, client_secret, query, *regions):
-    regions = list(regions)
-    query = query
-    result_list=[]
-    for region in regions:
-        for q in query:
-            region_query = region + ' ' + q
-            encText = urllib.parse.quote(region_query)
-            url = "https://openapi.naver.com/v1/search/local.json?query=" + encText + "&display=50"
+# def place_top5(client_id, client_secret, query, *regions):
+#     regions = list(regions)
+#     query = query
+#     result_list=[]
+#     for region in regions:
+#         for q in query:
+#             region_query = region + ' ' + q
+#             encText = urllib.parse.quote(region_query)
+#             url = "https://openapi.naver.com/v1/search/local.json?query=" + encText + "&display=50"
     
-            request = urllib.request.Request(url)
-            request.add_header("X-Naver-Client-Id", client_id)
-            request.add_header("X-Naver-Client-Secret", client_secret)
-            response = urllib.request.urlopen(request)
-            rescode = response.getcode()
+#             request = urllib.request.Request(url)
+#             request.add_header("X-Naver-Client-Id", client_id)
+#             request.add_header("X-Naver-Client-Secret", client_secret)
+#             response = urllib.request.urlopen(request)
+#             rescode = response.getcode()
             
-            if(rescode==200):
-                response_body = response.read()
-                results = json.loads(response_body)['items']
+#             if(rescode==200):
+#                 response_body = response.read()
+#                 results = json.loads(response_body)['items']
                 
-                for i, result in enumerate(results):
-                    result['rank'] = i+1
-                    result['search'] = q
-                    result['region'] = region
-                    result['title'] = result['title'].replace('<b>','').replace('</b>','')
-                    result['date'] = datetime.now()
-                    result_list.append(result)
-            else:
-                print("Error Code:" + rescode)
+#                 for i, result in enumerate(results):
+#                     result['rank'] = i+1
+#                     result['search'] = q
+#                     result['region'] = region
+#                     result['title'] = result['title'].replace('<b>','').replace('</b>','')
+#                     result['date'] = datetime.now()
+#                     result_list.append(result)
+#             else:
+#                 print("Error Code:" + rescode)
                 
-    df = pd.DataFrame(result_list)
-    return df
+#     df = pd.DataFrame(result_list)
+#     return df
 
-df_real = place_top5(client_id, client_secret, query, regions)
+# df_real = place_top5(client_id, client_secret, query, regions)
 
-# search를 search로 비꿈
-df_real.rename(columns={'search': 'keyword'}, inplace=True)
-# 특정 키워드로 필터링된 데이터
-df111 = df_real.loc[df_real['keyword'] == '을지로3가 맛집', ['rank', 'title']].rename(columns={'title': '을지로3가 맛집'})
-df222 = df_real.loc[df_real['keyword'] == '을지로3가 와인',['rank', 'title']].rename(columns={'title': '을지로3가 와인'})
-df333 = df_real.loc[df_real['keyword'] == '을지로3가 위스키',['rank', 'title']].rename(columns={'title': '을지로3가 위스키'})
-df444 = df_real.loc[df_real['keyword'] == '을지로3가 술집',['rank', 'title']].rename(columns={'title': '을지로3가 술집'})
+# # search를 search로 비꿈
+# df_real.rename(columns={'search': 'keyword'}, inplace=True)
+# # 특정 키워드로 필터링된 데이터
+# df111 = df_real.loc[df_real['keyword'] == '을지로3가 맛집', ['rank', 'title']].rename(columns={'title': '을지로3가 맛집'})
+# df222 = df_real.loc[df_real['keyword'] == '을지로3가 와인',['rank', 'title']].rename(columns={'title': '을지로3가 와인'})
+# df333 = df_real.loc[df_real['keyword'] == '을지로3가 위스키',['rank', 'title']].rename(columns={'title': '을지로3가 위스키'})
+# df444 = df_real.loc[df_real['keyword'] == '을지로3가 술집',['rank', 'title']].rename(columns={'title': '을지로3가 술집'})
 
-# 'rank'를 기준으로 병합
-merged_df_real = df111.merge(df222, on='rank', how='outer')\
-               .merge(df333, on='rank', how='outer')\
-               .merge(df444, on='rank', how='outer')
+# # 'rank'를 기준으로 병합
+# merged_df_real = df111.merge(df222, on='rank', how='outer')\
+#                .merge(df333, on='rank', how='outer')\
+#                .merge(df444, on='rank', how='outer')
 
-st.header(f'플레이스 TOP5')
-now = datetime.today()
-st.write(now.strftime('%Y-%m-%d %H:%M'))
-merged_df_real = merged_df_real.sort_values(by='rank').set_index('rank')
-st.dataframe(merged_df_real)
+# st.header(f'플레이스 TOP5')
+# now = datetime.today()
+# st.write(now.strftime('%Y-%m-%d %H:%M'))
+# merged_df_real = merged_df_real.sort_values(by='rank').set_index('rank')
+# st.dataframe(merged_df_real)
 
 
 
