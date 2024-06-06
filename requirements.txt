@@ -2,7 +2,7 @@ requests-html
 urllib3
 plotly
 git+https://github.com/WooilJeong/PyKakao.git
-os
+
 selenium
 bs4
 requests
