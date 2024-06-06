@@ -21,6 +21,7 @@ jobs:
         pip install requests requests-html pandas chardet
         pip install streamlit
         pip install plotly
+        pip install pyperclip
 
     - name: Run update script
       env:
