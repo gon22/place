@@ -24,14 +24,23 @@ print(auth_url)
 
 
 
-# ChromeDriverManager를 사용하여 크롬 드라이버 설치 경로를 가져옵니다
+# ChromeDriverManager를 사용하여 현재 Chrome 버전에 맞는 드라이버 설치
 service = Service(ChromeDriverManager().install())
 
-# ChromeOptions 객체 생성
 options = Options()
 
-# 드라이버 인스턴스를 생성할 때 Service와 Options를 전달합니다
+# Headless 모드 설정 (필요에 따라)
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
+
+# 드라이버 인스턴스 생성
 driver = webdriver.Chrome(service=service, options=options)
+driver = webdriver.Chrome(executable_path='/path/to/chromedriver', options=options)
+
+options.add_argument('--remote-debugging-port=9222')
+options.add_argument('--disable-gpu')
+
 driver.get(auth_url)
 
 # 아이디 입력창
