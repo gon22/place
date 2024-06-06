@@ -280,7 +280,7 @@ except:
 #     pyperclip.copy(cl)
 #     st.success("성공!")
 
-st.download_button("Download some text", cl)
+# st.download_button("Download some text", cl)
     
 
     
