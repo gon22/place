@@ -20,11 +20,11 @@ import re
 
 
 ## 실시간 데이터 보기
-client_id = os.getenv("NAVER_CLIENT_ID")
-client_secret = os.getenv("NAVER_CLIENT_SECRET")
+# client_id = os.getenv("NAVER_CLIENT_ID")
+# client_secret = os.getenv("NAVER_CLIENT_SECRET")
 
-# client_id = "K25hzGPrWL8hskBSJWND"
-# client_secret = "SSKeYoapXo"
+client_id = "K25hzGPrWL8hskBSJWND"
+client_secret = "SSKeYoapXo"
 
 
 regions = '서울'
@@ -200,6 +200,9 @@ fig.for_each_trace(
 st.plotly_chart(fig, use_container_width=True)
 
 
+################################################################
+
+
 st.header(f'플레이스 TOP5')
 
 col1, col2= st.columns(2)
@@ -245,3 +248,20 @@ merged_df = merged_df.sort_values(by='rank').set_index('rank')
 
 # 정렬된 데이터프레임 출력
 st.dataframe(merged_df)
+
+###############################################
+
+# 키워드에 따른 데이터 필터링 함수
+def clips_data(keyword, df):
+    if option and option_apm:
+        clip = df[df[keyword] == '르템플']['rank'].values.tolist()[0]
+    return st.write(f'{keyword} : {clip}위')
+try:
+    clips_data('을지로3가 맛집', df1)
+    clips_data('을지로3가 와인', df2)
+    clips_data('을지로3가 위스키', df3)
+    clips_data('을지로3가 술집', df4)
+except:
+    st.write('')
+
+
