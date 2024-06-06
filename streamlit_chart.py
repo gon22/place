@@ -13,6 +13,11 @@ import plotly.express as px
 import pytz
 
 
+import datetime as dt
+import chardet
+import encodings
+import re
+
 
 ## 실시간 데이터 보기
 client_id = os.getenv("NAVER_CLIENT_ID")
