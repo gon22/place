@@ -10,3 +10,4 @@ lxml_html_clean
 requests-html
 pandas
 chardet
+os
