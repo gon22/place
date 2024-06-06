@@ -33,14 +33,11 @@ options = Options()
 options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
-
-# 드라이버 인스턴스 생성
-driver = webdriver.Chrome(service=service, options=options)
-driver = webdriver.Chrome(executable_path='/path/to/chromedriver', options=options)
-
 options.add_argument('--remote-debugging-port=9222')
 options.add_argument('--disable-gpu')
 
+# 드라이버 인스턴스 생성
+driver = webdriver.Chrome(service=service, options=options)
 driver.get(auth_url)
 
 # 아이디 입력창
