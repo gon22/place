@@ -257,16 +257,16 @@ with st.expander("플레이스 TOP5"):
     ###############################################
     
     # 키워드에 따른 데이터 필터링 함수
-    def clips_data(keyword, df):
-        if option and option_apm:
-            clip = df[df[keyword] == '르템플']['rank'].values.tolist()[0]
-        return st.write(f'{keyword} : {clip}위')
-    try:
-        clips_data('을지로3가 맛집', df1)
-        clips_data('을지로3가 와인', df2)
-        clips_data('을지로3가 위스키', df3)
-        clips_data('을지로3가 술집', df4)
-    except:
-        st.write('')
+def clips_data(keyword, df):
+    if option and option_apm:
+        clip = df[df[keyword] == '르템플']['rank'].values.tolist()[0]
+    return st.write(f'{keyword} : {clip}위')
+try:
+    clips_data('을지로3가 맛집', df1)
+    clips_data('을지로3가 와인', df2)
+    clips_data('을지로3가 위스키', df3)
+    clips_data('을지로3가 술집', df4)
+except:
+    st.write('')
 
 
