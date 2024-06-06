@@ -19,6 +19,7 @@ jobs:
       run: |
         pip install lxml_html_clean
         pip install requests requests-html pandas chardet
+        pip install streamlit
 
     - name: Run update script
       env:
