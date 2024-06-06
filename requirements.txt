@@ -5,4 +5,4 @@ git+https://github.com/WooilJeong/PyKakao.git
 
 selenium
 bs4
-
+requests
