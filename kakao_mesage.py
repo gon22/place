@@ -3,6 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 
 import time
 from PyKakao import Message
@@ -19,7 +21,17 @@ print(auth_url)
 
 # Selenium을 이용하여 웹 브라우저 자동화
 # driver = webdriver.Chrome()
-driver = webdriver.Chrome(ChromeDriverManager().install())
+
+
+
+# ChromeDriverManager를 사용하여 크롬 드라이버 설치 경로를 가져옵니다
+service = Service(ChromeDriverManager().install())
+
+# ChromeOptions 객체 생성
+options = Options()
+
+# 드라이버 인스턴스를 생성할 때 Service와 Options를 전달합니다
+driver = webdriver.Chrome(service=service, options=options)
 driver.get(auth_url)
 
 # 아이디 입력창
