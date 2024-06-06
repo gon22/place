@@ -70,8 +70,15 @@ time.sleep(5)  # 로그인 시간을 충분히 줍니다. 필요에 따라 조�
 redirected_url = driver.current_url
 print(redirected_url)
 
-code = redirected_url.split('code=')
+login_btn2 = driver.find_element(By.CSS_SELECTOR, ".wrap_profile")
+login_btn2.click()
+time.sleep(3)  #간편 로그인 시간을 충분히 줍니다. 필요에 따라 조정하세요.
+
+
+redirected_url2 = driver.current_url
+code = redirected_url2.split('code=')
 print(code)
+
 
 # 브라우저 종료
 driver.quit()
