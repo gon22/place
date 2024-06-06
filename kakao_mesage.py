@@ -47,7 +47,10 @@ id = driver.find_element(By.CSS_SELECTOR, "#loginId--1")
 id.click()
 
 # 키보드 입력 설정
-id.send_keys(login_id)
+try:
+    id.send_keys(login_id)
+except TypeError as e:
+    print(f"An error occurred: {e}")
 
 # 비밀번호 입력창 찾기
 pw = driver.find_element(By.CSS_SELECTOR, "#password--2")
