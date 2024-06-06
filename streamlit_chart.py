@@ -203,6 +203,7 @@ with st.expander("순위 변동 차트"):
 ################################################################
 
 
+import pyperclip
 
 with st.expander("플레이스 TOP5"):
 
@@ -260,13 +261,25 @@ with st.expander("플레이스 TOP5"):
 def clips_data(keyword, df):
     if option and option_apm:
         clip = df[df[keyword] == '르템플']['rank'].values.tolist()[0]
-    return st.write(f'{keyword} : {clip}위')
+    return f'{keyword} : {clip}위'
 try:
-    clips_data('을지로3가 맛집', df1)
-    clips_data('을지로3가 와인', df2)
-    clips_data('을지로3가 위스키', df3)
-    clips_data('을지로3가 술집', df4)
+    a,b,c,d = clips_data('을지로3가 맛집', df1),clips_data('을지로3가 와인', df2),clips_data('을지로3가 위스키', df3),clips_data('을지로3가 술집', df4)
+    # clips_list = a+b+c+d
+    cl = f"""
+        {a} \n
+        {b} \n
+        {c} \n
+        {d}
+    """
+    st.write(cl, unsafe_allow_html=True)
 except:
     st.write('')
 
+# Add a button to copy text to clipboard
+if st.button("텍스트 복사"):
+    pyperclip.copy(cl)
+    st.success("성공!")
 
+    
+
+    
