@@ -14,11 +14,11 @@ import pytz
 
 
 ## 실시간 데이터 보기
-# client_id = os.getenv("NAVER_CLIENT_ID")
-# client_secret = os.getenv("NAVER_CLIENT_SECRET")
+client_id = os.getenv("NAVER_CLIENT_ID")
+client_secret = os.getenv("NAVER_CLIENT_SECRET")
 
-client_id = "K25hzGPrWL8hskBSJWND"
-client_secret = "SSKeYoapXo"
+# client_id = "K25hzGPrWL8hskBSJWND"
+# client_secret = "SSKeYoapXo"
 
 
 regions = '서울'
