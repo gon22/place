@@ -1,27 +1,25 @@
-# Chrome driver 자동 업데이트
-from webdriver_manager.chrome import ChromeDriverManager 
-
+import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from webdriver_manager.chrome import ChromeDriverManager
+
 import time
 from PyKakao import Message
 
-from selenium.webdriver.chrome.options import Options
 
-options = Options()
-
-options.add_argument("--headless")
-options.add_argument('--no-sandbox')
-
+service_key = os.getenv("SERVICE_KEY")
+login_id = os.getenv("LOGIN_ID")
+login_password = os.getenv("LOGIN_PASSWORD")
 
 # API 설정
-API = Message(service_key="535beb56f41f8c1d92b5f87300a2fd96")
+API = Message(service_key=service_key)
 auth_url = API.get_url_for_generating_code()
 print(auth_url)
 
 # Selenium을 이용하여 웹 브라우저 자동화
-driver = webdriver.Chrome(options=options)  # ChromeDriver 경로를 지정하거나 환경 변수에 추가해야 합니다.
+# driver = webdriver.Chrome()
+driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.get(auth_url)
 
 # 아이디 입력창
@@ -31,14 +29,14 @@ id = driver.find_element(By.CSS_SELECTOR, "#loginId--1")
 id.click()
 
 # 키보드 입력 설정
-id.send_keys("kwakyh7@nate.com") # "네이버 아이디"에는 본인 네이버 아이디 입력
+id.send_keys(login_id)
 
 # 비밀번호 입력창 찾기
 pw = driver.find_element(By.CSS_SELECTOR, "#password--2")
 # 클릭하도록 설정
 pw.click()
 # 키보드 입력 설정
-pw.send_keys("dkrlwmf1959?") # "네이버 비밀번호"에는 본인 네이버 비밀번호 입력
+pw.send_keys(login_password)
 
 # 로그인 버튼 클릭
 login_btn = driver.find_element(By.CSS_SELECTOR, ".btn_g.highlight.submit")
@@ -53,17 +51,12 @@ print(redirected_url)
 
 code = redirected_url.split('code=')
 
-
 # 브라우저 종료
 driver.quit()
 
 # Access Token
-access_token = API.get_access_token_by_redirected_url('code='+"".join(code[1]))
+access_token = API.get_access_token_by_redirected_url('code=' + "".join(code[1]))
 API.set_access_token(access_token)
-
-# # Access Token이 만료될 경우, Refresh Token을 사용하여 새 토큰 발급
-# new_access_token = API.refresh_access_token(refresh_token)
-# API.set_access_token(new_access_token)
 
 # 메시지 유형 - 피드
 message_type = "feed"
