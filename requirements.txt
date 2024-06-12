@@ -1,9 +1,4 @@
-requests-html
-urllib3
+
+urllib
 plotly
 
-selenium
-bs4
-lxml_html_clean
-pandas
-chardet
