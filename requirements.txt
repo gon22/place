@@ -1,8 +1,8 @@
 
 pandas
 numpy
-urllib3  # Note: urllib is part of the Python standard library, but urllib3 is an external library that may be useful
-jsonlib  # json is part of the Python standard library, but if you need additional functionalities, consider jsonlib
+# urllib3  # Note: urllib is part of the Python standard library, but urllib3 is an external library that may be useful
+# jsonlib  # json is part of the Python standard library, but if you need additional functionalities, consider jsonlib
 
 pytz
 plotly
