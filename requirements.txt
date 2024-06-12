@@ -1,8 +1,8 @@
-streamlit
+
 pandas
 numpy
 urllib3  # Note: urllib is part of the Python standard library, but urllib3 is an external library that may be useful
 jsonlib  # json is part of the Python standard library, but if you need additional functionalities, consider jsonlib
-os-sys  # os is part of the Python standard library, but you can include os-sys if you need extra functionalities
+
 pytz
 plotly
