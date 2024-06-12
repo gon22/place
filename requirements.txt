@@ -1,4 +1,5 @@
 
 urllib
 plotly
-
+requests
+git+https://github.com/WooilJeong/PyKakao.git
