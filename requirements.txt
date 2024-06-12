@@ -4,7 +4,6 @@ plotly
 
 selenium
 bs4
-requests
 lxml_html_clean
 pandas
 chardet
