@@ -203,7 +203,7 @@ with st.expander("순위 변동 차트"):
 ################################################################
 
 
-import pyperclip
+
 
 with st.expander("플레이스 TOP5"):
 
