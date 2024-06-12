@@ -205,7 +205,7 @@ with st.expander("순위 변동 차트"):
 
 
 
-with st.expander("플레이스 TOP5"):
+with st.expander("플레이스 TOP5 기록 (날짜/데이터 수집 시점 선택)"):
 
     col1, col2= st.columns(2)
     
